@@ -16,20 +16,20 @@ public class Hunter extends Character {
     private Vector<Position> path = new Vector<Position>();
     private int pathIndex;
     private int amountSteps;
-    private boolean isPlaying;
+    //private boolean isPlaying;
     
     Hunter(int x, int y) {
         super.setPosition(x, y);
         super.setDefPosition(x,y);
         this.createPath();
-        this.isPlaying = false;
+        //this.isPlaying = false;
     }
     
     Hunter(Position p) {
         super.setPosition(p);
         super.setDefPosition(p);
         this.createPath();
-        this.isPlaying = false;
+        //this.isPlaying = false;
     }
     
     private void createPath() {
@@ -42,16 +42,21 @@ public class Hunter extends Character {
         int moveY = super.getPosition().getY();
         
         while((moveX > 0) || (moveY > 0)) {
+            int randomAmount = 0, cellsLeft = 0;
+            cellsLeft = (moveX < moveY) ? moveX : moveY;
+            cellsLeft = (cellsLeft < 3) ? cellsLeft : 3;
+            
+            randomAmount = (int)(Math.random()*cellsLeft)+1;
             if(moveX == 0) {
-                moveY--;
+                moveY -= randomAmount;
             } else if (moveY == 0) {
-                moveX--;
+                moveX -=randomAmount;
             } else {
                 int whichWay = (int)((Math.random()*2)+1);
                 if(whichWay == 1) {
-                    moveY--;
+                    moveY -=randomAmount;
                 } else {
-                    moveX--;
+                    moveX -=randomAmount;
                 }
             }
             path.addElement(new Position(moveX, moveY));
@@ -81,12 +86,12 @@ public class Hunter extends Character {
         this.pathIndex = 0;
     }
     
-    public void setState(boolean b) {
+    /*public void setState(boolean b) {
         this.isPlaying = b;
     }
     
     public boolean getState() {
         return this.isPlaying;
-    }
+    }*/
     
 }

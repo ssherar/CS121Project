@@ -23,7 +23,7 @@ public class Engine {
     
     Engine() {
         in = new KeyListener();
-        map = new Grid(12, 3);
+        map = new Grid(12, 5);
         p = new Player(0,11);
         h = new Hunter[5];
         s = new Score();
@@ -65,12 +65,12 @@ public class Engine {
 
     private void playGame() {
         boolean moved = false;
-        int hunterPlaying = 0;
+        //int hunterPlaying = 0;
         
         
         s.resetScore();
-        h[hunterPlaying].setState(true);
-        hunterPlaying++;
+        //h[hunterPlaying].setState(true);
+       // hunterPlaying++;
         
         
         while(!lose) {
@@ -87,9 +87,9 @@ public class Engine {
             
             map.setPlayerPos(p.getPosition());
             for(int i = 0; i < h.length; i++) {
-                if(h[i].getState() == true) {
+                //if(h[i].getState() == true) {
                     map.setHunterPos(h[i].getPosition(), i);
-                }
+                //}
             }
             map.clearScreen();
             this.echoHeader();
@@ -125,10 +125,10 @@ public class Engine {
                 }
             }
             
-            if((hunterPlaying < 5) && (s.showScore() % 9 == 0)) {
-                h[hunterPlaying].setState(true);
-                hunterPlaying++;
-            }
+            //if((hunterPlaying < 5) && (s.showScore() % 9 == 0)) {
+             //   h[hunterPlaying].setState(true);
+            //    hunterPlaying++;
+            //}
                 
         }
     }

@@ -12,7 +12,7 @@
  */
 public class TestHunter {
     public static void main(String[] args) {
-        Hunter h = new Hunter(0,11);
+        Hunter h = new Hunter(11,11);
         h.echoPath();
         Position fakePos = new Position(11,11);
         System.out.println(h.comparePosition(fakePos));
