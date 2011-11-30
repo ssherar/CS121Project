@@ -33,9 +33,11 @@
 
 public class Player extends Character {
     private int strength;
+    private int defaultStrength;
+    
     Player(int x, int y) {
         super.setPosition(x,y);
-        this.strength = 5;
+        this.defaultStrength = 5;
     }
     
     public void minusStrength() {
@@ -46,5 +48,9 @@ public class Player extends Character {
     
     public int getStrength() {
         return this.strength;
+    }
+    
+    public void resetStrength() {
+        this.strength = this.defaultStrength;
     }
 }

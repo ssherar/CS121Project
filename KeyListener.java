@@ -41,4 +41,13 @@ public class KeyListener {
         return Integer.MIN_VALUE;
     }
     
+    public String readString(int length) {
+        try {
+            return ""+ input.next().substring(0,length -1);
+        } catch (Exception e) {
+            
+        }
+        return "";
+    }
+    
 }

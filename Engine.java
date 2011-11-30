@@ -10,13 +10,15 @@
  *
  * @author Sam Sherar (sbs1)
  */
+import java.util.*;
+
 public class Engine {
     private KeyListener in;
     private Grid map;
     private Player p;
     private Hunter[] h;
     private Score s;
-    private boolean win;
+    private Highscores hs;
     private boolean lose;
     private int menuChoice = -1;
     private final Position HUNTER_START = new Position(11,11);
@@ -27,7 +29,8 @@ public class Engine {
         p = new Player(0,11);
         h = new Hunter[5];
         s = new Score();
-        win = lose = false;
+        hs = new Highscores("scores.xml");
+        lose = false;
         for(int i = 0; i < h.length; i++) {
             h[i] = new Hunter(HUNTER_START);
         }
@@ -65,25 +68,9 @@ public class Engine {
 
     private void playGame() {
         boolean moved = false;
-        //int hunterPlaying = 0;
-        
-        
-        s.resetScore();
-        //h[hunterPlaying].setState(true);
-       // hunterPlaying++;
-        
-        
+        p.resetStrength();     
+        s.resetScore();    
         while(!lose) {
-            int collision = this.checkCollision();
-            System.out.println();
-            if(collision >= 0) {
-                h[collision].resetPos();
-                p.minusStrength();
-            }
-            
-            if(p.getStrength() == 0) {
-                lose = true;
-            }
             
             map.setPlayerPos(p.getPosition());
             for(int i = 0; i < h.length; i++) {
@@ -125,16 +112,35 @@ public class Engine {
                 }
             }
             
-            //if((hunterPlaying < 5) && (s.showScore() % 9 == 0)) {
-             //   h[hunterPlaying].setState(true);
-            //    hunterPlaying++;
-            //}
-                
+            int collision = this.checkCollision();
+            System.out.println();
+            if(collision >= 0) {
+                h[collision].resetPos();
+                p.minusStrength();
+            }
+            
+            if(p.getStrength() == 0) {
+                lose = true;
+            }
         }
+        this.lostTheGame();
     }
 
     private void highScores() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        System.out.println(hs.viewHighscores()+"\n\n");
+        
+    }
+    
+    private void lostTheGame() {
+        System.out.println("\n\n Well done, you managed to get " + s.showScore() + " points!");
+        //check against highscores and see if is a highscore!
+        int index = hs.indexOfLowest();
+        if(hs.getScore(index) < s.showScore()) {
+            System.out.print("Congraulations! You have made it on the scoreboard!\n Please enter your name (only 3 characters!) > ");
+            String name = in.readString(3);
+            hs.overwriteScore(index, name, s.showScore());
+            System.out.println();
+        }
     }
     
     private int checkCollision() {
