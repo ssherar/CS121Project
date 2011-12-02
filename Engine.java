@@ -20,6 +20,7 @@ public class Engine {
     private Score s;
     private Highscores hs;
     private boolean lose;
+    private boolean level2;
     private int menuChoice = -1;
     private final Position HUNTER_START = new Position(11,11);
     
@@ -28,7 +29,7 @@ public class Engine {
         map = new Grid(12, 5);
         p = new Player(0,11);
         h = new Hunter[5];
-        s = new Score();
+        s = new Score(1);
         hs = new Highscores("scores.xml");
         lose = false;
         for(int i = 0; i < h.length; i++) {
@@ -68,15 +69,15 @@ public class Engine {
 
     private void playGame() {
         boolean moved = false;
+        s.setInc(1);
+        s.setInc(5);
         p.resetStrength();     
         s.resetScore();    
         while(!lose) {
             
             map.setPlayerPos(p.getPosition());
             for(int i = 0; i < h.length; i++) {
-                //if(h[i].getState() == true) {
                     map.setHunterPos(h[i].getPosition(), i);
-                //}
             }
             map.clearScreen();
             this.echoHeader();
@@ -106,16 +107,24 @@ public class Engine {
                 moved = false;
                 for(Hunter i: h) {
                     if(!i.nextMove()) {
-                          i.resetPos();
+                          i.resetPos(p.getPosition());
                           s.incScore();
                     }
+                }
+            }
+            
+            if(s.showScore() > 42 && this.level2 == false) {
+                this.level2 = true;
+                s.setInc(2);
+                for(Hunter i: h) {
+                    i.setLevel(2);
                 }
             }
             
             int collision = this.checkCollision();
             System.out.println();
             if(collision >= 0) {
-                h[collision].resetPos();
+                h[collision].resetPos(p.getPosition());
                 p.minusStrength();
             }
             
@@ -139,6 +148,7 @@ public class Engine {
             System.out.print("Congraulations! You have made it on the scoreboard!\n Please enter your name (only 3 characters!) > ");
             String name = in.readString(3);
             hs.overwriteScore(index, name, s.showScore());
+            hs.writeToFile();
             System.out.println();
         }
     }
@@ -154,7 +164,8 @@ public class Engine {
     
     private void echoHeader() {
         System.out.print("Strength: " + p.getStrength() + "\t");
-        System.out.print("Score: " + s.showScore());
+        System.out.print("Score: " + s.showScore() + "\t");
+        System.out.print("Level: " + ((this.level2 == true) ? 2 : 1));
         System.out.println();
     }
 }

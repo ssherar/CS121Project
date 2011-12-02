@@ -12,9 +12,11 @@
  */
 public class Score {
     private int currentScore;
+    private int inc;
     
-    Score() {
-        this.currentScore = 0;
+    Score(int i) {
+        this.currentScore = 40;
+        this.inc = i;
     }
     
     public void resetScore() {
@@ -22,10 +24,15 @@ public class Score {
     }
     
     public void incScore() {
-        this.currentScore++;
+        this.currentScore += this.inc;
     }
     
     public int showScore() {
         return this.currentScore;
     }
+    
+    public void setInc(int i) {
+        this.inc = i;
+    }
+    
 }

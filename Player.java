@@ -53,4 +53,8 @@ public class Player extends Character {
     public void resetStrength() {
         this.strength = this.defaultStrength;
     }
+    
+    public Position getPosition() {
+        return super.getPosition();
+    }
 }

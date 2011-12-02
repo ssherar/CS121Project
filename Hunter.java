@@ -16,6 +16,7 @@ public class Hunter extends Character {
     private Vector<Position> path = new Vector<Position>();
     private int pathIndex;
     private int amountSteps;
+    private boolean level2;
     //private boolean isPlaying;
     
     Hunter(int x, int y) {
@@ -23,6 +24,7 @@ public class Hunter extends Character {
         super.setDefPosition(x,y);
         this.createPath();
         //this.isPlaying = false;
+        this.level2 = false;
     }
     
     Hunter(Position p) {
@@ -41,6 +43,22 @@ public class Hunter extends Character {
         int moveX = super.getPosition().getX();
         int moveY = super.getPosition().getY();
         
+        this.level1Path(moveX, moveY);
+    }
+    
+    private void createPath(Position player) {
+        pathIndex = 0;
+        amountSteps = 0;
+        path.clear();
+        path.addElement(new Position(11,11));
+        amountSteps++;
+        int moveX = super.getPosition().getX();
+        int moveY = super.getPosition().getY();
+        
+        this.level2Path(moveX, moveY, player);
+    }
+    
+    private void level1Path(int moveX, int moveY) {
         while((moveX > 0) || (moveY > 0)) {
             int randomAmount = 0, cellsLeft = 0;
             cellsLeft = (moveX < moveY) ? moveX : moveY;
@@ -64,6 +82,22 @@ public class Hunter extends Character {
         }
     }
     
+    private void level2Path(int moveX, int moveY, Position player) {
+        // if the hunter further past the player
+            
+        while((moveX >= player.getX()) || (moveY >= player.getY())) {
+            if(moveX > player.getX()) {
+                moveX--;
+            }
+            if(moveY > player.getY()) {
+                moveY--;
+            }
+            path.addElement(new Position(moveX, moveY));
+            amountSteps++;
+        }
+        this.level1Path(moveX, moveY);
+    }
+    
     public void echoPath() {
         for(int i = 0; i < path.size(); i++) {
             System.out.println("("+path.elementAt(i).getX()+","+path.elementAt(i).getY()+")");
@@ -80,18 +114,23 @@ public class Hunter extends Character {
         return true;
     }
     
-    public void resetPos() {
+    public void resetPos(Position player) {
         super.setPosition(super.getDefPosition());
-        this.createPath();
         this.pathIndex = 0;
+        if(level2 == true) {
+            this.createPath(player);
+        } else {
+            this.createPath();
+        }
+        
     }
     
-    /*public void setState(boolean b) {
-        this.isPlaying = b;
+    public void setLevel(int level) {
+        if(level == 1) {
+            this.level2 = false;
+        } else if (level == 2) {
+            this.level2 = true;
+        }
     }
-    
-    public boolean getState() {
-        return this.isPlaying;
-    }*/
     
 }
