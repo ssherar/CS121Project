@@ -82,7 +82,7 @@ public class Highscores {
                     Date date;
                     
                     try {
-                        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        DateFormat fmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         date = fmt.parse(dateLst.item(0).getTextContent());
                         name = nameLst.item(0).getTextContent();
                         score = scoreLst.item(0).getTextContent();
@@ -126,7 +126,9 @@ public class Highscores {
                 eventWriter.add(tab);
                 this.createElement(eventWriter, "score", ""+hse.getScore());
                 eventWriter.add(tab);
-                this.createElement(eventWriter, "date", ""+hse.getDate());
+                DateFormat fmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String dString = fmt.format(hse.getDate());
+                this.createElement(eventWriter, "date", dString);
                 eventWriter.add(tab);
                 EndElement endScore = eventFactory.createEndElement("", "", "scoreList");
                 eventWriter.add(endScore);
